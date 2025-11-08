@@ -13,44 +13,33 @@ Sockets Links.
 client:
 ```
 import socket
-
-HOST = '127.0.0.1'  
-PORT = 65432  
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-    client_socket.connect((HOST, PORT))
-
-    message = 'Hello, Server!'
-    client_socket.sendall(message.encode('utf-8'))
-
-    data = client_socket.recv(1024)
-    print(f"Received echo: {data.decode('utf-8')}")
+s=socket.socket()
+s.connect(('localhost',8000))
+while True:
+    msg=input("Client > ")
+    s.send(msg.encode())
+    print("Server > ",s.recv(1024).decode())
 ```
 server:
 ```
 import socket
-
-HOST = '127.0.0.1'  
-PORT = 65432        
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    server_socket.bind((HOST, PORT))
-    server_socket.listen()
-
-    print(f"Server is listening on {HOST}:{PORT}")
-    while True:
-        conn, addr = server_socket.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
-                print(f"Echoed: {data.decode('utf-8')}")
+s=socket.socket()
+s.bind(('localhost',8000))
+s.listen(5)
+c,addr=s.accept()
+while True:
+    ClientMessage=c.recv(1024).decode()
+    c.send(ClientMessage.encode())
 ```
 ## OUPUT:
-<img width="972" height="353" alt="image" src="https://github.com/user-attachments/assets/0a858b0b-11e7-4e3f-94f0-92e61662c795" />
+client:
+
+<img width="1249" height="293" alt="image" src="https://github.com/user-attachments/assets/64ce2bb0-fc2a-4830-8538-23424c56d0db" />
+
+server:
+
+<img width="1185" height="258" alt="image" src="https://github.com/user-attachments/assets/b2aa057b-852d-4815-9d00-24647ac1a7d6" />
+
 
 ## RESULT
 Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links 
